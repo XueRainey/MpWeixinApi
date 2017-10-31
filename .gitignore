@@ -1,0 +1,8 @@
+/node_modules
+/.vscode
+/npm-debug.log
+/yarn-error.log
+/v8.log
+/cache
+test.js
+.DS_Store

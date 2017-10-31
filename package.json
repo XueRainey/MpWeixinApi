@@ -1,0 +1,19 @@
+{
+  "name": "mp-weixin-api",
+  "version": "0.0.1",
+  "description": "微信公众号Api",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rainey",
+  "license": "MIT",
+  "dependencies": {
+    "md5": "^2.2.1",
+    "request": "^2.83.0",
+    "tough-cookie-filestore-bugfixed": "0.0.2"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3"
+  }
+}
