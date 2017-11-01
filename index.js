@@ -1,13 +1,15 @@
+const fs = require('fs')
 const path = require('path')
-const MpWeixin = require('./src')
-const userInfo = require('./cache/user.json')
+const MpWeixin = require('./lib/MpWeixin')
 
 ;(async function run () {
-  const demo = new MpWeixin(userInfo, {
-    cookieJarPath: path.resolve(__dirname, './cache/cookiesJar.json'),
-    cachePath: path.resolve(__dirname, './cache')
+  const userInfoCachePath = path.resolve(__dirname, './cache/userInfo.json')
+  const demo = new MpWeixin(require(userInfoCachePath), {
+    cachePath: path.resolve(__dirname, './cache'),
+    onUserInfoChange: (userInfo) => {
+      fs.writeFileSync(userInfoCachePath, JSON.stringify(userInfo, null, 4))
+    }
   })
-
   await demo.login()
-  console.log(demo.userInfo)
+  console.log('login:', await demo.checkLogin())
 })()
