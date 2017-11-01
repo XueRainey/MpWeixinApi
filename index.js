@@ -1,15 +1,14 @@
 const fs = require('fs')
 const path = require('path')
-const MpWeixin = require('./lib/MpWeixin')
+const MpWeixin = require('./lib/platform')
 
 ;(async function run () {
   const userInfoCachePath = path.resolve(__dirname, './cache/userInfo.json')
-  const demo = new MpWeixin(require(userInfoCachePath), {
-    cachePath: path.resolve(__dirname, './cache'),
-    onUserInfoChange: (userInfo) => {
-      fs.writeFileSync(userInfoCachePath, JSON.stringify(userInfo, null, 4))
-    }
+  const platformer = new MpWeixin(require(userInfoCachePath), {
+    cachePath: path.resolve(__dirname, './cache')
   })
-  await demo.login()
-  console.log('login:', await demo.checkLogin())
+  platformer.addEventListener('onUserInfoChange', () => {
+    fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.getUserInfo(), null, 4))
+  })
+  if (!platformer.checkLogin()) await platformer.login()
 })()
