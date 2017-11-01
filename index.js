@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const MpWeixin = require('./lib/platform')
+const { MpWeixin } = require('./lib')
 
 ;(async function run () {
   const userInfoCachePath = path.resolve(__dirname, './cache/userInfo.json')
@@ -10,5 +10,5 @@ const MpWeixin = require('./lib/platform')
   platformer.addEventListener('onUserInfoChange', () => {
     fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.getUserInfo(), null, 4))
   })
-  if (!platformer.checkLogin()) await platformer.login()
+  if (!await platformer.checkLogin()) await platformer.login()
 })()
