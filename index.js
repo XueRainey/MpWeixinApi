@@ -3,7 +3,7 @@ const path = require('path')
 const { WeiXin } = require('./lib')
 
 ;(async function run () {
-  const userInfoCachePath = path.resolve(__dirname, './cache/userInfo.json')
+  const userInfoCachePath = path.resolve(__dirname, './cache/weixin.userinfo.json')
   const platformer = new WeiXin(require(userInfoCachePath), {
     cachePath: path.resolve(__dirname, './cache')
   })

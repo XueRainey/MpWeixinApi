@@ -1,7 +1,5 @@
 # 新媒体平台群管方案
 
-## 内部结构介绍
-
 ### 平台基类
 
 所有平台需要默认继承`BasePlatformer`，内置post 和 get请求（使用方式与request相同，返回一个promise）
