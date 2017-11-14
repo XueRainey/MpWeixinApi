@@ -1,12 +1,12 @@
-# 微信公众号平台API
+# 新媒体平台群管方案
 
-微信公众号平台API
+## 内部结构介绍
 
-## 平台账户封装
+### 平台基类
 
-MpWeixin，内置post 和 get请求（使用方式与request相同，返回一个promise），调用login后，保证传入的userInfo的cookie信息有效，即可方便的调用微信公众号后台的api
+所有平台需要默认继承`BasePlatformer`，内置post 和 get请求（使用方式与request相同，返回一个promise）
 
-### Constructor
+#### Constructor
 
   - userInfo
   - options
@@ -14,17 +14,11 @@ MpWeixin，内置post 和 get请求（使用方式与request相同，返回一�
     - host
     - cachePath
 
-### Event
+#### Event
 
   1. onUserInfoChange: 当平台账户信息更改时触发
 
-### Method
-
-  - login: 登录平台账户
-
-  - checkLogin: 检测平台账户是否登录
-
-  - getUserInfo: 获取当前平台账户信息
+#### Method
 
   - makeUrl: 生成url
     
@@ -41,10 +35,17 @@ MpWeixin，内置post 和 get请求（使用方式与request相同，返回一�
 
   - fireEvent: 触发监听事件
 
+### 微信公众号平台
 
-## 功能特性
+WeiXin，调用login后，本地cache路径下会保存一张二维码图片，扫码验证后，即可保证该对象登陆成功，cookies和token会被拦截并触发`onUserInfoChange`事件，之后即可方便的调用微信公众号后台的api
 
-  1. 登录
+#### Method
+
+  - login: 登录平台账户（会调用一次updatePlatformerInfo）
+
+  - checkLogin: 检测平台账户是否登录
+
+  - updatePlatformerInfo: 更新当前平台账户信息
 
 ## 环境要求
 
