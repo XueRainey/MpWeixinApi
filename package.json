@@ -1,6 +1,6 @@
 {
   "name": "muti-platform-manage",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "新媒体多平台API",
   "main": "lib",
   "scripts": {

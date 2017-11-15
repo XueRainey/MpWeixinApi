@@ -7,9 +7,12 @@ const { WeiXin } = require('./lib')
   const platformer = new WeiXin(require(userInfoCachePath), {
     cachePath: path.resolve(__dirname, './cache')
   })
-  platformer.addListener('onUserInfoChange', () => {
-    fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+
+  platformer.addListener('loginHook', (status) => {
+    console.log(status)
+    if (status === 'finish') fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
   })
+
   if (!await platformer.checkLogin()) await platformer.login()
   await platformer.updatePlatformerInfo(platformer)
 })()
