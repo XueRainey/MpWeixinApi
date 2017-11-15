@@ -10,7 +10,9 @@ const { WeiXin } = require('./lib')
 
   platformer.addListener('loginHook', (status) => {
     console.log(status)
-    if (status === 'finish') fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+    if (status === 'finish') {
+      fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+    }
   })
 
   if (!await platformer.checkLogin()) await platformer.login()
