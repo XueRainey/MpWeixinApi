@@ -1,11 +1,11 @@
 const fs = require('fs')
 const path = require('path')
-const { WeiXin } = require('./lib')
+const { WeiXin } = require('../lib')
 
 ;(async function run () {
-  const userInfoCachePath = path.resolve(__dirname, './cache/weixin.userinfo.json')
+  const userInfoCachePath = path.resolve(__dirname, '../cache/weixin.userinfo.json')
   const platformer = new WeiXin(require(userInfoCachePath), {
-    cachePath: path.resolve(__dirname, './cache')
+    cachePath: path.resolve(__dirname, '../cache')
   })
 
   platformer.addListener('loginHook', (status) => {
@@ -16,5 +16,5 @@ const { WeiXin } = require('./lib')
   })
 
   if (!await platformer.checkLogin()) await platformer.login()
-  await platformer.updatePlatformerInfo(platformer)
+  await platformer.updatePlatformerInfo()
 })()
