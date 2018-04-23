@@ -5,7 +5,8 @@ const { WeiXin } = require('../lib')
 ;(async function run () {
   const userInfoCachePath = path.resolve(__dirname, '../cache/weixin.userinfo.json')
   const platformer = new WeiXin(require(userInfoCachePath), {
-    cachePath: path.resolve(__dirname, '../cache')
+    cachePath: path.resolve(__dirname, '../cache'),
+    debug: true
   })
 
   platformer.addListener('loginHook', (status) => {
