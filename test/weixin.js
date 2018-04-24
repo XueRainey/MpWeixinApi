@@ -25,6 +25,6 @@ const { WeiXin } = require('../lib')
   })
 
   if (!await platformer.checkLogin()) await platformer.login()
-  console.log(platformer._getCookie('uuid'))
-  // await platformer.updatePlatformerInfo()
+  // console.log(platformer.getCookieMap())
+  console.log(await platformer.getPlatformerInfo())
 })()
