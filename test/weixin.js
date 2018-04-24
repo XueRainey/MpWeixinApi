@@ -12,13 +12,19 @@ const { WeiXin } = require('../lib')
     console.log(status)
     if (status === 'qrImageDownload') {
       // `data:${data.fileType};base64,${data.buffer.toString('base64')}`
-      fs.writeFileSync('./ab.jpeg', data.buffer.toString('binary'), 'binary', console.log)
+      fs.writeFileSync('./cache/qr.jpeg', data.buffer.toString('binary'), 'binary', console.log)
     }
     if (status === 'finish') {
-      fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+      // fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+      console.log('login done')
     }
   })
 
+  platformer.addListener('onUserInfoChange', () => {
+    fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
+  })
+
   if (!await platformer.checkLogin()) await platformer.login()
-  await platformer.updatePlatformerInfo()
+  console.log(platformer._getCookie('uuid'))
+  // await platformer.updatePlatformerInfo()
 })()
