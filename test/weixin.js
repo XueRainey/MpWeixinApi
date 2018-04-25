@@ -1,30 +1,67 @@
 const fs = require('fs')
 const path = require('path')
-const { WeiXin } = require('../lib')
+const WeiXin = require('../lib/WeiXin')
+const { weixin: weixinLoginInfo } = require('../cache/loginInfo')
+const { describe, it, before, after } = require('mocha')
+const { expect } = require('chai')
 
-;(async function run () {
-  const userInfoCachePath = path.resolve(__dirname, '../cache/weixin.userinfo.json')
-  const platformer = new WeiXin(require(userInfoCachePath), {
-    debug: false
+const userInfoCachePath = path.resolve(__dirname, '../cache/weixin.userinfo.json')
+const platformer = new WeiXin({
+  debug: false,
+  test: true
+})
+platformer.addListener('onUserInfoChange', () => fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 2)))
+
+describe('WeiXin', function () {
+  before(async function () {
+    console.log('before')
+  })
+  after(function () {
+    console.log('after')
   })
 
-  platformer.addListener('loginHook', (status, data) => {
-    console.log(status)
-    if (status === 'qrImageDownload') {
-      // `data:${data.fileType};base64,${data.buffer.toString('base64')}`
-      fs.writeFileSync('./cache/qr.jpeg', data.buffer.toString('binary'), 'binary', console.log)
-    }
-    if (status === 'finish') {
-      // fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
-      console.log('login done')
-    }
+  describe('#checkLogin()', function () {
+    it('should return false when the platformer not login', async function () {
+      expect(await platformer.checkLogin()).to.be.false
+    })
   })
 
-  platformer.addListener('onUserInfoChange', () => {
-    fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
-  })
+  describe('#login()', function () {
+    const hookList = []
+    platformer.addListener('loginHook', (status, data) => {
+      hookList.push(status)
+      if (status === 'qrImageDownload') {
+        fs.writeFileSync('./cache/qr.jpeg', data.buffer.toString('binary'), 'binary', console.log)
+      }
+    })
 
-  if (!await platformer.checkLogin()) await platformer.login()
-  // console.log(platformer.getCookieMap())
-  console.log(await platformer.getPlatformerInfo())
-})()
+    it('should throw error when no username', async function () {
+      try {
+        await platformer.login()
+      } catch (e) {
+        expect(e.message).to.equal('Must exist username!')
+      }
+    })
+
+    it('should throw error when no password', async function () {
+      try {
+        await platformer.login({ username: 'test password' })
+      } catch (e) {
+        expect(e.message).to.equal('Must exist password!')
+      }
+    })
+
+    it('should not throw error', async function () {
+      this.timeout(0)
+      await platformer.login(weixinLoginInfo)
+    })
+
+    it('login should call all the hooks', async function () {
+      expect(hookList).to.include.members(['qrImageDownload', 'waitScan', 'waitConfirm', 'confirmed', 'finish'])
+    })
+
+    it('should return true when the platformer login', async function () {
+      expect(await platformer.checkLogin()).to.be.true
+    })
+  })
+})

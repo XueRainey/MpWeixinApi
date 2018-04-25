@@ -4,7 +4,8 @@
   "description": "新媒体多平台API",
   "main": "lib",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "test-cover": "istanbul cover _mocha"
   },
   "author": "Rainey",
   "license": "MIT",
@@ -19,6 +20,9 @@
     "tough-cookie": "^2.3.3"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "istanbul": "^1.0.0-alpha.2",
+    "mocha": "^5.1.1",
     "standard": "^10.0.3"
   }
 }
