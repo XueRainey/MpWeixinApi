@@ -16,6 +16,7 @@
   "dependencies": {
     "md5": "^2.2.1",
     "node-rsa": "^0.4.2",
+    "querystring": "^0.2.0",
     "request": "^2.83.0",
     "tough-cookie": "^2.3.3"
   },
