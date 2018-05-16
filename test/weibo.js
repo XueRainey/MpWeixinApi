@@ -49,7 +49,7 @@ describe('WeiBo', function () {
       }
     })
 
-    it('should not throw error', async function () {
+    it('should not throw error when login', async function () {
       this.timeout(0)
       await platformer.login(weiboLoginInfo)
     })
