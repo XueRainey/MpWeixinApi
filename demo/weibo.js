@@ -4,10 +4,7 @@ const { WeiBo } = require('../lib')
 
 ;(async function run () {
   const userInfoCachePath = path.resolve(__dirname, '../cache/weibo.userinfo.json')
-  const platformer = new WeiBo({
-    cachePath: path.resolve(__dirname, '../cache'),
-    debug: false
-  }, require(userInfoCachePath))
+  const platformer = new WeiBo(require(userInfoCachePath))
 
   platformer.addListener('loginHook', (status) => {
     console.log(status)

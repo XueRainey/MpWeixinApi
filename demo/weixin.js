@@ -6,27 +6,19 @@ const { weixin: weixinLoginInfo } = require('../cache/loginInfo')
 ;(async function run () {
   try {
     const userInfoCachePath = path.resolve(__dirname, '../cache/weixin.userinfo.json')
-    const platformer = new WeiXin({
-      debug: false
-    }, require(userInfoCachePath))
-
-    platformer.addListener('loginHook', (status, data) => {
-      console.log(status)
-      if (status === 'qrImageDownload') {
-        // `data:${data.fileType};base64,${data.buffer.toString('base64')}`
-        fs.writeFileSync('./cache/qr.jpeg', data.buffer.toString('binary'), 'binary', console.log)
-      }
-      if (status === 'finish') {
-        // fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 4))
-        console.log('login done')
-      }
-    })
+    const platformer = new WeiXin()
 
     platformer.addListener('onUserInfoChange', () => {
       fs.writeFileSync(userInfoCachePath, JSON.stringify(platformer.info(), null, 2))
     })
 
+    platformer.addListener('loginHook', (status, data) => {
+      console.log(status)
+      if (status === 'qrImageDownload') fs.writeFileSync('./cache/qr.jpeg', data.buffer.toString('binary'), 'binary', console.log)
+    })
+
     if (!await platformer.checkLogin()) await platformer.login(weixinLoginInfo)
+    console.log('login:', await platformer.checkLogin())
   } catch (e) {
     console.error(e.message)
   }
