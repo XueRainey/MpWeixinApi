@@ -22,7 +22,7 @@ describe('WeiXin', function () {
 
   describe('#checkLogin()', function () {
     it('should return false when the platformer not login', async function () {
-      expect(await platformer.checkLogin()).to.be.false
+      expect(await platformer.checkLogin()).to.equal(false)
     })
   })
 
@@ -57,11 +57,12 @@ describe('WeiXin', function () {
     })
 
     it('login should call all the hooks', async function () {
-      expect(hookList).to.include.members(['qrImageDownload', 'waitScan', 'waitConfirm', 'confirmed', 'finish'])
+      // waitConfirm 等待确认可能会由于在轮询等待时间内操作完成而缺失
+      expect(hookList).to.include.members(['qrImageDownload', 'waitScan', 'confirmed', 'finish'])
     })
 
     it('should return true when the platformer login', async function () {
-      expect(await platformer.checkLogin()).to.be.true
+      expect(await platformer.checkLogin()).to.equal(true)
     })
   })
 })

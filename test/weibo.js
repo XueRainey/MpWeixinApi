@@ -23,7 +23,7 @@ describe('WeiBo', function () {
   describe('#checkLogin()', function () {
     it('should return false when the platformer not login', async function () {
       this.timeout(0)
-      expect(await platformer.checkLogin()).to.be.false
+      expect(await platformer.checkLogin()).to.equal(false)
     })
   })
 
@@ -60,7 +60,7 @@ describe('WeiBo', function () {
 
     it('should return true when the platformer login', async function () {
       this.timeout(0)
-      expect(await platformer.checkLogin()).to.be.true
+      expect(await platformer.checkLogin()).to.equal(true)
     })
   })
 })
